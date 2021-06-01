@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
+import TalkButton from './components/TalkButton';
+import { io } from 'socket.io-client';
+import { getArrayBuffer } from './Utils/audioConversion';
+
+const socket = io('http://192.168.0.25:3001', {
+  extraHeaders: {
+    "walkie-talkie": "abcd"
+  }
+});
 
 function App() {
+
+  const sendBuffer = (buffer: ArrayBuffer) => {
+    console.log("Sending: ", buffer);
+    socket.emit("message", buffer);
+  }
+
+  const playReceived = (newBuffer: ArrayBuffer) => {
+    const context = new AudioContext();
+    const sourceBuffer = context.createBufferSource();
+    context.decodeAudioData(newBuffer).then((response) => {
+      sourceBuffer.buffer = response;
+      sourceBuffer.connect(context.destination);
+
+      sourceBuffer?.start();
+    })
+
+  }
+
+  useEffect(() => {
+    socket.on("buffer", (newBuffer) => {
+      console.log("Received new buffer", newBuffer);
+      playReceived(newBuffer);
+    });
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TalkButton sendBuffer={sendBuffer} />
     </div>
   );
 }

@@ -1,0 +1,19 @@
+.button{
+    width: 25rem;
+    height: 25rem;
+    border: 2px solid #313131;
+    border-radius: 50rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text{
+    color: white;
+    font-size: 4rem;
+    user-select: none;
+}
+
+.active{
+    border: 2px solid green;
+}
