@@ -4,7 +4,7 @@ import TalkButton from './components/TalkButton';
 import { io } from 'socket.io-client';
 import { getArrayBuffer } from './Utils/audioConversion';
 
-const socket = io('http://192.168.0.25:3001', {
+const socket = io('https://walkie-talkie-servers.herokuapp.com/', {
   extraHeaders: {
     "walkie-talkie": "abcd"
   }
