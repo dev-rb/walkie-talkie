@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import './App.css';
 import TalkButton from './components/TalkButton';
 import { io } from 'socket.io-client';
-import { getArrayBuffer } from './Utils/audioConversion';
 
 const socket = io('https://walkie-talkie-servers.herokuapp.com/', {
   extraHeaders: {
