@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import TalkButton from './components/TalkButton';
 import { io } from 'socket.io-client';
@@ -10,6 +10,8 @@ const socket = io('https://walkie-talkie-servers.herokuapp.com/', {
 });
 
 function App() {
+
+  const [channel, setChannel] = useState("00000");
 
   const sendBuffer = (buffer: ArrayBuffer) => {
     console.log("Sending: ", buffer);
@@ -37,7 +39,14 @@ function App() {
 
   return (
     <div className="App">
-      <TalkButton sendBuffer={sendBuffer} />
+      <div className="wrapper">
+        <h1 className="connectedChannel"> Channel: {channel}</h1>
+        <TalkButton sendBuffer={sendBuffer} />
+        <div className="inputContainer">
+          <input type="text" placeholder={channel} className="inputChannel" maxLength={10} />
+          <button className="submitButton"> Join </button>
+        </div>
+      </div>
     </div>
   );
 }
